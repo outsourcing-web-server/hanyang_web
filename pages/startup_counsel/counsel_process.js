@@ -50,14 +50,14 @@ const CounselApply = () => {
     }, [bestMentor])
 
     const moveCounselApply = () =>{
-        Modal.warning({
-            title: (
-                <div>
-                    원스톱창업상담은 현재 일시 중단이 되었고 <br/>
-                    프로그램 재개 시 홈페이지 공지됩니다.(2026.03.예정)
-                </div>
-            ),
-        });
+        // Modal.warning({
+        //     title: (
+        //         <div>
+        //             원스톱창업상담은 현재 일시 중단이 되었고 <br/>
+        //             프로그램 재개 시 홈페이지 공지됩니다.(2026.03.예정)
+        //         </div>
+        //     ),
+        // });
         /*if(user.login == false || (user.role == "ROLE_MT") ){
             Modal.warning({
                 title: (
@@ -103,7 +103,7 @@ const CounselApply = () => {
                 </p>
                 <div className={cx("txt_c")}>
                     <Link href={"/startup_counsel/mentor_introduce"}><a className={`${cx("basic-btn03","btn-blue-bg2")} mr_20`}>멘토찾기</a></Link>
-                    <Link href={"#"}><a className={cx("basic-btn03","btn-blue-bd")} onClick={() =>{moveCounselApply()}}>창업상담 신청하기</a></Link>
+                    <Link href={"/startup_counsel/counsel_apply"}><a className={cx("basic-btn03","btn-blue-bd")} onClick={() =>{moveCounselApply()}}>창업상담 신청하기</a></Link>
                 </div>
 
 
