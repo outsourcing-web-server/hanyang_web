@@ -499,8 +499,7 @@ const StudentReportPage = () => {
                                     </Upload>
                                     <Typography.Text type="danger">{error}</Typography.Text>
                                 </div>
-                                <p className={cx("help_txt01")}>※ 신청하신 멘토링과 관련된 참고자료를 첨부해주세요. 첨부파일은 담당 멘토에게 전달되며, 최대3개까지
-                                    첨부 가능합니다.</p>
+                                <p className={cx("help_txt01")}>※ 입력해주신 사업자등록증을 첨부해 주세요.</p>
                             </li>
                         </ul>
                     </div>
