@@ -388,85 +388,84 @@ const Introduce = () => {
                             </div>
                             <table>
                                 <colgroup>
-                                    <col style={{width: "34%"}}/>
-                                    <col style={{width: "18.18%"}}/>
+                                    <col style={{width: "30%"}}/>
                                     <col/>
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <th>업무명</th>
-                                    <th>내선번호<br/>(02-2220-)</th>
-                                    <th>이메일</th>
+                                    <th>전화번호</th>
+                                    <th>담당업무</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
+                                    <td>02-2220-2861</td>
                                     <td>창업지원단 총괄</td>
-                                    <td>2861</td>
-                                    <td className={cx("c-sky")}>danielku@hanyang.ac.kr</td>
                                 </tr>
                                 <tr>
-                                    <td>학생창업(창업동아리, 창업경진대회 등)</td>
-                                    <td>2230, 2863</td>
-                                    <td className={cx("c-sky")}>youngceo@hanyang.ac.kr</td>
+                                    <td>02-2220-2230</td>
+                                    <td rowSpan="2">학생창업(창업동아리, 창업경진대회 등)</td>
                                 </tr>
                                 <tr>
+                                    <td>02-2220-2863</td>
+                                </tr>
+                                <tr>
+                                    <td>02-2220-2858</td>
                                     <td>교원창업, 실험실창업</td>
-                                    <td>2858</td>
-                                    <td className={cx("c-sky")}>wooli44@hanyang.ac.kr</td>
                                 </tr>
                                 <tr>
-                                    <td>동문창업(한양스타트업아카데미, 한양 스타트업포럼 등)</td>
-                                    <td>2864</td>
-                                    <td className={cx("c-sky")}>yjkim0808@hanyang.ac.kr</td>
+                                    <td>02-2220-2984</td>
+                                    <td rowSpan="2">동문창업(한양스타트업아카데미, 한양 스타트업포럼 등)</td>
                                 </tr>
                                 <tr>
-                                    <td>원스톱창업상담실</td>
-                                    <td>2870, 1978</td>
-                                    <td className={cx("c-sky")}>ckkang@hanyang.ac.kr <br/>gwlee@hanyang.ac.kr</td>
+                                    <td>02-2220-2867</td>
                                 </tr>
                                 <tr>
+                                    <td>02-2220-2870</td>
+                                    <td rowSpan="2">원스톱창업상담실</td>
+                                </tr>
+                                <tr>
+                                    <td>02-2220-1978</td>
+                                </tr>
+                                <tr>
+                                    <td>02-2220-2868</td>
                                     <td>창업멘토링</td>
-                                    <td>2868</td>
-                                    <td className={cx("c-sky")}>mentoring1@hanyang.ac.kr</td>
                                 </tr>
                                 <tr>
-                                    <td>투자유치, 오픈이노베이션</td>
-                                    <td>2871</td>
-                                    <td className={cx("c-sky")}>sgch77@hanyang.ac.kr</td>
+                                    <td>02-2220-2871</td>
+                                    <td>투자유치, 오픈이노베이션, 글로벌 창업지원</td>
                                 </tr>
                                 <tr>
+                                    <td>02-2220-2984</td>
                                     <td>창업강좌, 창업융합전공, 창업학사제도</td>
-                                    <td>2984</td>
-                                    <td className={cx("c-sky")}>yjkim0808@hanyang.ac.kr</td>
                                 </tr>
                                 <tr>
+                                    <td>02-2220-1565</td>
                                     <td>247 스타트업 돔</td>
-                                    <td>1565</td>
-                                    <td className={cx("c-sky")}>campustown@hanyang.ac.kr</td>
                                 </tr>
                                 <tr>
-                                    <td>글로벌 창업지원</td>
-                                    <td>2866</td>
-                                    <td className={cx("c-sky")}>mhparkhy@hanyang.ac.kr</td>
-                                </tr>
-                                <tr>
+                                    <td>02-2220-2862</td>
                                     <td>창업중심대학</td>
-                                    <td>2862, 1979, 2859</td>
-                                    <td className={cx("c-sky")}>yechang@hanyang.ac.kr <br/>if@hanyang.ac.kr <br/>scaleup@hanyang.ac.kr</td>
                                 </tr>
                                 <tr>
-                                    <td>캠퍼스타운, RISE사업(본글로벌, 서울캠퍼스타운)</td>
-                                    <td>1565</td>
-                                    <td className={cx("c-sky")}>campustown@hanyang.ac.kr</td>
+                                    <td>02-2220-1565</td>
+                                    <td>캠퍼스타운</td>
                                 </tr>
                                 <tr>
+                                    <td>02-2220-2866</td>
+                                    <td>RISE사업(본글로벌, 서울캠퍼스타운)</td>
+                                </tr>
+                                <tr>
+                                    <td>02-2220-2982</td>
                                     <td>창업보육센터(BI센터)</td>
-                                    <td>2982</td>
-                                    <td className={cx("c-sky")}>kjw1218@hanyang.ac.kr</td>
+                                </tr>
+                                <tr>
+                                    <td>02-2220-2857</td>
+                                    <td>모두의 창업</td>
                                 </tr>
                                 </tbody>
                             </table>
+                            <p style={{fontSize: "16px", fontWeight: 500, textAlign: "right", marginBottom: "20px"}}>대표 이메일 : startup@hanyang.ac.kr</p>
 
                             <h2>IAB 자문교수</h2>
                             <table>
