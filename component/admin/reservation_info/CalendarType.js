@@ -97,7 +97,9 @@ const CalendarType = ({cx, scheduleList, pageChange, manageItem, setManageItem, 
         const data = event.event != undefined ? event.event :event;
         return (
             <div onClick={() => handleDetail(data)} key={data.scheduleId}>
-                <p>{`${moment(data.rentalStartTime,"HH:mm:ss").format("HH:mm")} ~ ${moment(data.rentalEndTime,"HH:mm:ss").format("HH:mm")}`}</p>
+                {data.timeSlots && data.timeSlots.map((slot, i) => (
+                    <p key={i}>{`${moment(slot.rentalStartTime,"HH:mm:ss").format("HH:mm")} ~ ${moment(slot.rentalEndTime,"HH:mm:ss").format("HH:mm")}`}</p>
+                ))}
                 <button className={cx("event_title")} >
                     {`${data.title}`}
                 </button>
@@ -279,7 +281,10 @@ const CalendarType = ({cx, scheduleList, pageChange, manageItem, setManageItem, 
                         <tr>
                             <th scope="row">이용일</th>
                             <td>
-                                {`${detailInfo.rentalDate} ${moment(detailInfo.rentalStartTime,"HH:mm:ss").format("HH:mm")} ~ ${moment(detailInfo.rentalEndTime,"HH:mm:ss").format("HH:mm")}`}
+                                {detailInfo.rentalDate}{' '}
+                                {detailInfo.timeSlots && detailInfo.timeSlots.map((slot, i) => (
+                                    <span key={i}>{`${moment(slot.rentalStartTime,"HH:mm:ss").format("HH:mm")} ~ ${moment(slot.rentalEndTime,"HH:mm:ss").format("HH:mm")}`}{i < detailInfo.timeSlots.length - 1 && ', '}</span>
+                                ))}
                             </td>
                         </tr>
                         <tr>

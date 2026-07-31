@@ -11,7 +11,7 @@ const RentalStep02 = ({cx,selectPlace,selectRoom ,selectDate ,selectTime ,setSte
     const [form] = Form.useForm();
 
     useEffect(() =>{
-        if (selectRoom == null || selectDate == null || selectTime.timeId == null) {
+        if (selectRoom == null || selectDate == null || selectTime.length === 0) {
             setStep(1)
         }
 
@@ -55,7 +55,9 @@ const RentalStep02 = ({cx,selectPlace,selectRoom ,selectDate ,selectTime ,setSte
                     <td className={cx("event_time")}>
                         <div className={cx("top_th")}>시간</div>
                         <ul>
-                            {selectTime.startTime} ~ <br/>{selectTime.endTime}
+                            {selectTime.map((t, i) => (
+                                <li key={i}>{t.startTime} ~ {t.endTime}</li>
+                            ))}
                         </ul>
                     </td>
                     <td>

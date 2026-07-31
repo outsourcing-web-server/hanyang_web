@@ -12,15 +12,16 @@ const ListType = ({cx, scheduleList,pageChange,manageItem,setManageItem,saveStat
         <div className={cx("tb_style_1","reservation_info_tb")}>
             <table>
                 <colgroup>
-                    <col style={{width: "5.6%"}}/>
-                    <col style={{width: "11.5%"}}/>
-                    <col style={{width: "14.6%"}}/>
-                    <col style={{width: "8%"}}/>
+                    <col style={{width: "5%"}}/>
+                    <col style={{width: "11%"}}/>
+                    <col style={{width: "13%"}}/>
                     <col style={{width: "7%"}}/>
+                    <col style={{width: "6%"}}/>
                     <col/>
                     <col style={{width: "7%"}}/>
+                    <col style={{width: "10%"}}/>
                     <col style={{width: "7%"}}/>
-                    <col style={{width: "14%"}}/>
+                    <col style={{width: "12%"}}/>
                 </colgroup>
                 <thead>
                 <tr>
@@ -31,6 +32,7 @@ const ListType = ({cx, scheduleList,pageChange,manageItem,setManageItem,saveStat
                     <th scope="col">진행 상태</th>
                     <th scope="col">사유</th>
                     <th scope="col">이용일</th>
+                    <th scope="col">이용시간</th>
                     <th scope="col">신청일</th>
                     <th scope="col">관리</th>
                 </tr>

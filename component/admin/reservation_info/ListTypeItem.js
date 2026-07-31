@@ -88,10 +88,11 @@ const ListTypeItem = ({schedule,manageItem,setManageItem,saveStatus}) => {
                     getRentalType(editStatus.status)
                 )}</td>
             <td>{schedule.purpose}</td>
+            <td>{schedule.rentalDate}</td>
             <td>
-                <p>{schedule.rentalDate}</p>
-                <p>{moment(schedule.rentalStartTime,"HH:mm:ss").format("HH:mm")} ~</p>
-                <p>{moment(schedule.rentalEndTime,"HH:mm:ss").format("HH:mm")}</p>
+                {schedule.timeSlots && schedule.timeSlots.map((slot, i) => (
+                    <p key={i}>{moment(slot.rentalStartTime,"HH:mm:ss").format("HH:mm")} ~ {moment(slot.rentalEndTime,"HH:mm:ss").format("HH:mm")}</p>
+                ))}
             </td>
             <td>{moment(schedule.regDate).format("YYYY-MM-DD HH:mm:ss")}</td>
             <td>

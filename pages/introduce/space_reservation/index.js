@@ -25,6 +25,7 @@ import {Empty,Modal} from 'antd';
 import RentalStep02 from "../../../component/rental/RentalStep02";
 
 const cx = classnames.bind(styles);
+const MAX_TIME_SLOTS = 3;
 
 // export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
 //
@@ -49,11 +50,7 @@ const SpaceReservation = () => {
     const [selectPlace, setSelectPlace] = useState(null);
     const [selectRoom, setSelectRoom] = useState(null);
     const [selectDate, setSelectDate] = useState(null);
-    const [selectTime, setSelectTime] = useState({
-        startTime: null,
-        endTime: null,
-        timeId: null
-    });
+    const [selectTime, setSelectTime] = useState([]);
     const [step, setStep] = useState(1);
     const [rentalInfo, setRentalInfo] = useState({
         personCount: 0,
@@ -88,7 +85,7 @@ const SpaceReservation = () => {
     }, [])
 
     useEffect(() => {
-        if (selectPlace != null && selectRoom != null && selectDate != null && selectTime.timeId != null) {
+        if (selectPlace != null && selectRoom != null && selectDate != null && selectTime.length > 0) {
             setApplyActive(true);
         } else {
             setApplyActive(false);
@@ -116,20 +113,12 @@ const SpaceReservation = () => {
         })
         setSelectPlace(place);
         setSelectRoom(null);
-        setSelectTime({
-            startTime: null,
-            endTime: null,
-            timeId: null
-        })
+        setSelectTime([])
     }
 
     const handleSelectRoom = (room) => {
         setSelectRoom(room);
-        setSelectTime({
-            startTime: null,
-            endTime: null,
-            timeId: null
-        })
+        setSelectTime([])
         setSpace({
             ...space,
             time: null
@@ -147,13 +136,22 @@ const SpaceReservation = () => {
     }
 
     const handleTimeChange = (time) => {
-
-        setSelectTime({
-            startTime: moment(time.startTime, "HH:mm:ss").format("HH:mm").toString(),
-            endTime: moment(time.endTime, "HH:mm:ss").format("HH:mm").toString(),
-            timeId: time.timeId
-        })
-
+        const alreadySelected = selectTime.some(t => t.timeId === time.timeId)
+        if (alreadySelected) {
+            setSelectTime(selectTime.filter(t => t.timeId !== time.timeId))
+        } else {
+            if (selectTime.length >= MAX_TIME_SLOTS) {
+                Modal.warning({
+                    title: `최대 ${MAX_TIME_SLOTS}개의 시간만 선택할 수 있습니다`,
+                })
+                return
+            }
+            setSelectTime([...selectTime, {
+                startTime: moment(time.startTime, "HH:mm:ss").format("HH:mm").toString(),
+                endTime: moment(time.endTime, "HH:mm:ss").format("HH:mm").toString(),
+                timeId: time.timeId
+            }])
+        }
     }
 
     const handleRentalApply = () => {
@@ -165,8 +163,10 @@ const SpaceReservation = () => {
         const data = {
             roomId: selectRoom.roomId,
             rentalDate: moment(selectDate).format("YYYY-MM-DD").toString(),
-            rentalStartTime: selectTime.startTime,
-            rentalEndTime: selectTime.endTime,
+            timeSlots: selectTime.map(t => ({
+                rentalStartTime: t.startTime,
+                rentalEndTime: t.endTime
+            })),
             ...rentalInfo
         }
         dispatch(addRentalSchedule(data));
@@ -185,10 +185,7 @@ const SpaceReservation = () => {
             setSelectPlace(null)
             setSelectRoom(null)
             setSelectDate(new Date());
-            setSelectTime({
-                startTime: null,
-                timeId: null
-            })
+            setSelectTime([])
             dispatch(getSpaceRentalInfoAll());
         } else if (!addScheduleLoading && !addSchedule.result && addSchedule.code == 409) {
             alert("중복된 일정입니다")
@@ -224,7 +221,7 @@ const SpaceReservation = () => {
         //     personCount: personCount,
         //     purpose: purpose
 
-        if (selectRoom == null || selectDate == null || selectTime.timeId == null) {
+        if (selectRoom == null || selectDate == null || selectTime.length === 0) {
             // alert("입력부족")
         } else if (!user.login) {
             Modal.warning({
@@ -381,7 +378,7 @@ const SpaceReservation = () => {
                                             {space.time != null && space.time.map((time) =>
                                                 <li key={time.timeId}>
                                                     <a
-                                                        className={cx(!time.duplicate && time.timeId == selectTime.timeId ? "on" : !time.duplicate ? 'active' : "disable")}
+                                                        className={cx(!time.duplicate && selectTime.some(t => t.timeId === time.timeId) ? "on" : !time.duplicate ? 'active' : "disable")}
                                                         disabled={time.duplicate} onClick={() => {
                                                         handleTimeChange(time)
                                                     }}>
@@ -402,7 +399,7 @@ const SpaceReservation = () => {
                             <div className={cx("txt_c")}>
                                 <button className={cx("basic-btn03", "btn-blue-bd")} onClick={(e) => {
                                     nextStep();
-                                }} disabled={selectRoom == null || selectDate == null || selectTime.timeId == null}>다음단계
+                                }} disabled={selectRoom == null || selectDate == null || selectTime.length === 0}>다음단계
                                 </button>
                             </div>
                         </>

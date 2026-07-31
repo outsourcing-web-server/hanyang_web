@@ -136,7 +136,9 @@ const ScheduleDetail = () => {
                                             <td className={cx("event_time")}>
                                                 <div className={cx("top_th")}>시간</div>
                                                 <ul>
-                                                    {moment(schedule.rentalStartTime,"HH:mm:ss").format("HH시 mm분").toString()} ~ <br/>{moment(schedule.rentalEndTime,"HH:mm:ss").format("HH시 mm분").toString()}
+                                                    {schedule.timeSlots && schedule.timeSlots.map((slot, i) => (
+                                                        <li key={i}>{moment(slot.rentalStartTime,"HH:mm:ss").format("HH시 mm분").toString()} ~ {moment(slot.rentalEndTime,"HH:mm:ss").format("HH시 mm분").toString()}</li>
+                                                    ))}
                                                 </ul>
                                             </td>
                                             <td>
