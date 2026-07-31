@@ -46,13 +46,24 @@ const Calendar01 = ({events,cateList,changeCategory,changeType,handleShowContent
     },[])
     useEffect(() =>{
         let result = [];
-        const a = events.map((item)=>{
-            return [{id:item.startupCalendarId,title:item.title+" 신청기간",content:item.content,start:item.applyStartDate,end:item.applyEndDate},{id:item.startupCalendarId,title:item.title,content:item.content,start:item.eventDate,end:item.eventDate}]
-        })
-        a.forEach((item) =>{
-            item.forEach((event) =>{
-                result.push(event)
-            })
+        events.forEach((item)=>{
+            if(item.isRental){
+                result.push({
+                    id: item.startupCalendarId,
+                    title: item.title,
+                    content: item.content,
+                    start: item.start,
+                    end: item.end,
+                    isRental: true
+                })
+            }else{
+                if(item.applyStartDate && item.applyEndDate){
+                    result.push({id:item.startupCalendarId,title:item.title+" 신청기간",content:item.content,start:item.applyStartDate,end:item.applyEndDate})
+                }
+                if(item.eventDate){
+                    result.push({id:item.startupCalendarId,title:item.title,content:item.content,start:item.eventDate,end:item.eventDate})
+                }
+            }
         })
         setEventList(result)
     },[events])

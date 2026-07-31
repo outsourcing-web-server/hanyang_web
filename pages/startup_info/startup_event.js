@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 import qs from 'query-string';
 import {useDispatch, useSelector} from "react-redux";
 import {getStartupCalendarList} from "../../store/startupCalendar/startupCalendar";
+import {getRentalScheduleList} from "../../store/spaceRental/spaceRental";
 import PageNavigation from "../../component/layout/PageNavigation";
 import {Button, Modal} from "antd";
 import Head from "next/head";
@@ -27,9 +28,12 @@ const StartupEvent = () => {
     })
 
     const [showContent,setShowContent] = useState(null);
+    const [events, setEvents] = useState([]);
 
-    const {startupCalendar} = useSelector(({startupCalendar, loading}) => ({
+    const {startupCalendar, scheduleList, user} = useSelector(({startupCalendar, spaceRental, auth, loading}) => ({
         startupCalendar: startupCalendar.startupCalendar,
+        scheduleList: spaceRental.getRentalScheduleList,
+        user: auth.user
     }))
 
     useEffect(() => {
@@ -54,6 +58,37 @@ const StartupEvent = () => {
         dispatch(getStartupCalendarList(data))
 
     }, [router.query])
+
+    useEffect(() => {
+        if(user.login){
+            dispatch(getRentalScheduleList({page:1, size: 1000}))
+        }
+    }, [user.login])
+
+    useEffect(() => {
+        let newEvents = [...startupCalendar.list];
+        if (scheduleList && scheduleList.list) {
+            const rentalEvents = scheduleList.list
+                .filter(item => item.status !== 'CANCEL' && item.status !== 'RETURN')
+                .map(item => ({
+                id: `rental-${item.scheduleId}`,
+                title: `[공간예약] ${item.roomName || item.placeName}`,
+                content: `
+                    <div>
+                        <p><strong>장소:</strong> ${item.placeName} ${item.roomName}</p>
+                        <p><strong>일시:</strong> ${item.rentalDate} ${item.rentalStartTime} ~ ${item.rentalEndTime}</p>
+                        <p><strong>목적:</strong> ${item.purpose}</p>
+                    </div>
+                `,
+                start: new Date(`${item.rentalDate}T${item.rentalStartTime}`),
+                end: new Date(`${item.rentalDate}T${item.rentalEndTime}`),
+                isRental: true,
+                startupCalendarId: `rental-${item.scheduleId}`,
+            }));
+            newEvents = [...newEvents, ...rentalEvents];
+        }
+        setEvents(newEvents);
+    }, [startupCalendar.list, scheduleList.list])
 
 
     const changeCategory = useCallback((e) => {
@@ -105,7 +140,7 @@ const StartupEvent = () => {
                     <h1 className={cx("sub_top_title")}>창업캘린더</h1>
                     <p className={cx("sub_top_txt")}>(예비)창업자를 위한 유익한 창업지원 소식을 제공합니다.</p>
                     {searchInfo.type == "C" && (
-                        <BoardSkinSelector skinName={'Calendar01'} events={startupCalendar.list} cateList={startupCalendar.cate}
+                        <BoardSkinSelector skinName={'Calendar01'} events={events} cateList={startupCalendar.cate}
                                            changeCategory={changeCategory} changeType={changeType} handleShowContent={handleShowContent}/>
 
                     )}

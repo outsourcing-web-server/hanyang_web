@@ -165,7 +165,7 @@ module.exports =
 module.exports = withImages()
 module.exports = {
     images: {
-        domains: ['localhost', '61.109.248.203', '210.103.188.124'],
+        domains: ['localhost', '203.240.226.53', '210.103.188.124'],
     },
 }
 

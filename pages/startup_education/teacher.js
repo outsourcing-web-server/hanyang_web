@@ -29,13 +29,13 @@ const Teacher = () => {
                                 <h1 className={cx("title_style_2")}>교원창업 가이드북</h1>
                             </div>
                             <div className={cx("txtArea")}>
-                                    <Link href="/assets/download/한양대학교서울_교원창업_가이드북_25년12월_1.pdf">
-                                        <a download target="_blank">
-                                            <p className={cx("txt_1")}>
-                                                교원창업 가이드북(ver. 2025.12) 다운받기
-                                            </p>
-                                        </a>
-                                    </Link>
+                                <Link href="/assets/download/한양대학교서울_교원창업_가이드북_25년12월_1.pdf">
+                                    <a download target="_blank">
+                                        <p className={cx("txt_1")}>
+                                            교원창업 가이드북(ver. 2025.12) 다운받기
+                                        </p>
+                                    </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
