@@ -1,178 +1,40 @@
-const withImages = require("next-images")
-const path = require('path');
-const withCSS = require("@zeit/next-css")
-const {styles} = require('@ckeditor/ckeditor5-dev-utils')
-// module.exports = {
-//     images: {
-//         domains: ['localhost'],
-//     },
-// }
-
-module.exports =
-    withCSS(
-        withImages({
-            webpack(config, options) {
-
-
-                // config.plugins.push(new CKEditorWebpackPlugin({ language: "ko",addMainLanguageTranslationsToAllAssets: true }));
-
-                // config.module.rules.forEach(function (rule, index, array) {
-                //     const test = rule.test && rule.test.toString() || ''
-                //     if (test.includes('css')) {
-                //         array[index] = {
-                //             ...rule,
-                //             exclude: /ckeditor5-[^/]+\/theme\/[\w-/]+\.css$/
-                //         }
-                //     } else if (test.includes('svg')) {
-                //         array[index] = {
-                //             ...rule,
-                //             exclude: /ckeditor5-[^/]+\/theme\/icons\/.+\.svg$/
-                //         }
-                //     }
-                // })
-                //
-                // config.module.rules.push({
-                //     test: /ckeditor5-[^/]+\/theme\/[\w-/]+\.css$/,
-                //     use: [
-                //         {
-                //             loader: 'style-loader',
-                //             options: {
-                //                 injectType: 'singletonStyleTag'
-                //             }
-                //         },
-                //         {
-                //             loader: 'postcss-loader',
-                //             options: styles.getPostCssConfig({
-                //                 themeImporter: {
-                //                     themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
-                //                 },
-                //                 minify: true
-                //             })
-                //         }
-                //     ]
-                // })
-                //
-                // config.module.rules.push({
-                //     test: /ckeditor5-[^/]+\/theme\/icons\/.+\.svg$/,
-                //     use: ['raw-loader']
-                // })
-
-
-                config.module.rules.push({
-                    test: /\.js$/,
-                    use:
-                        {
-                            loader: 'babel-loader',
-                            options:
-                                {
-                                    presets: ['@babel/preset-env']
-                                }
-                        }
-                })
-
-
-                config.module.rules.push({
-                    test: /\.js$/,
-                    exclude: /node_modules(?!\/quill-image-drop-module|quill-image-resize-module)/,
-                    loader: 'babel-loader',
-                })
-
-
-                config.plugins.push(new webpack.ProvidePlugin({
-                    'window.Quill': 'quill'
-                }))
-
-
-                config.module.rules.push({
-                    test: /\.(png|jpe?g|gif|svg|eot|otf|ttf|woff|woff2)$/i,
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name][hash].[ext]',
-                        publicPath: '/_next/static/',
-                        outputPath: 'static/',
-                        // outputPath: 'images',
-                        esModule: false,
-                    },
-                })
-
-                config.module.rules.push({
-                    test: /\.(png|jpe?g|gif|svg|eot|otf|ttf|woff|woff2)$/,
-                    use: {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192,
-                            publicPath: '/_next/static/',
-                            outputPath: 'static/',
-                            name: '[name].[ext]'
-                        }
-                    }
-                })
-
-
-
-                config.plugins.push(new CKEditorWebpackPlugin({ language: "ko" }));
-
-
-                // 1. 기존 nextjs webpack 처리를 ckeditor에서 처리할 부분을 제외하고 할 수 있도록 설정
-                config.module.rules.forEach(function(rule, index, array) {
-                    const test = rule.test.toString();
-                    if (test.includes("css")) {
-                        array[index] = {
-                            ...rule,
-                            exclude: /ckeditor5-[^/]+\/theme\/[\w-/]+\.css$/
-                        };
-                    } else if (test.includes("svg")) {
-                        array[index] = {
-                            ...rule,
-                            exclude: /ckeditor5-[^/]+\/theme\/icons\/.+\.svg$/
-                        };
-                    }
-                });
-
-                // 2. ckeditor css 처리
-                config.module.rules.push({
-                    test: /ckeditor5-[^/]+\/theme\/[\w-/]+\.css$/,
-                    use: [
-                        {
-                            loader: "style-loader",
-                            options: {
-                                injectType: "singletonStyleTag"
-                            }
-                        },
-                        {
-                            loader: "postcss-loader",
-                            options: styles.getPostCssConfig({
-                                themeImporter: {
-                                    themePath: require.resolve("@ckeditor/ckeditor5-theme-lark")
-                                },
-                                minify: true
-                            })
-                        }
-                    ]
-                });
-
-                // 3. ckeditor svg 처리
-                config.module.rules.push({
-                    test: /ckeditor5-[^/]+\/theme\/icons\/.+\.svg$/,
-                    use: ["raw-loader"]
-                });
-
-
-                return config
-            }
-        }))
-
-module.exports = withImages()
+/*
+ * next.config.js
+ *
+ * [보안 조치] Next.js Image Optimization API 취약점 대응 (CVE-2021-39178 / CVE-2022-23646)
+ *   - Next.js 12.3.7 로 업그레이드하여 취약점을 코드 레벨에서 근본 해소 (React 17 호환 유지).
+ *   - 심층 방어로 아래 설정을 함께 유지한다.
+ *       1) images.domains(외부 이미지 화이트리스트) 미설정 → 로컬 이미지만 최적화, 외부 호스트 원격 fetch 차단
+ *       2) 보안 응답 헤더(nosniff / X-Frame-Options / Referrer-Policy) 및 /_next/image CSP
+ *
+ * 참고) 과거의 withCSS/withImages/CKEditor 웹팩 설정 블록은 다중 module.exports 재할당으로
+ *       실제로는 적용되지 않던 죽은 코드였으며 webpack5(Next 12)와 비호환이라 제거하였다.
+ *       (CKEditor 는 public/assets/ckeditor.js 프리빌드 번들을 <script> 로 로드하므로 웹팩 처리 불필요,
+ *        이미지도 로컬 /public 경로 문자열만 사용하여 next-images 불필요)
+ */
 module.exports = {
     images: {
-        domains: ['localhost', '203.240.226.53', '210.103.188.124'],
+        // domains 미설정(보안): 외부 호스트 원격 fetch 차단, 로컬 이미지만 최적화
+    },
+    async headers() {
+        // 전역 보안 헤더 (콘텐츠 스니핑 / 클릭재킹 / 레퍼러 유출 방지)
+        const securityHeaders = [
+            { key: 'X-Content-Type-Options', value: 'nosniff' },
+            { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+            { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        ]
+        return [
+            // '/:path*' 는 하위 경로만 매칭되어 인덱스('/')에는 적용되지 않으므로 '/' 를 별도 지정
+            { source: '/', headers: securityHeaders },
+            { source: '/:path*', headers: securityHeaders },
+            {
+                // 이미지 최적화 응답 강화: 콘텐츠 타입 스니핑/화면 위·변조 방지
+                source: '/_next/image',
+                headers: [
+                    { key: 'Content-Security-Policy', value: "script-src 'none'; sandbox;" },
+                    { key: 'X-Content-Type-Options', value: 'nosniff' },
+                ],
+            },
+        ]
     },
 }
-
-
-// module.exports = withImages({
-//     exclude: path.resolve(__dirname, 'assets/image'),
-//     webpack(config, options) {
-//         return config
-//     }
-// })
