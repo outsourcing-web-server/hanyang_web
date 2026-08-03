@@ -2,6 +2,10 @@
 # next.js build output
 .next
 .out
+/out/
+# 보고서 문서(docx) 및 Office 임시파일 (저장소 비포함)
+*.docx
+~$*
 # dotenv environment variables file (build for Zeit Now)
 .env
 .env.build
