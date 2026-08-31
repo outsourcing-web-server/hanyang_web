@@ -127,7 +127,7 @@ const List = ({boardName}) => {
                     <h1 className={cx("sub_top_title")}>{currentBoard.board.boardKrName}</h1>
                     <p className={cx("sub_top_txt")}>{currentBoard.board.boardDesc}</p>
 
-                    {(currentBoard.board.boardEnName == 'notice' || currentBoard.board.boardEnName == 'faq' || currentBoard.board.boardEnName == 'qna')  && (
+                    {(currentBoard.board.boardEnName == 'faq' || currentBoard.board.boardEnName == 'qna')  && (
                         <SearchBoxSelector skinName="SearchBoxStyle03" changeSearchInfo={changeSearchInfo} searchInfo={searchInfo} searchContent={searchContent} category={currentBoard.cate}/>
                     )}
                     {currentBoard.board.boardEnName == 'news' && (
@@ -139,7 +139,7 @@ const List = ({boardName}) => {
                     {/*{currentBoard.board.boardEnName == 'people' && (
                         <SearchBoxSelector skinName="SearchBoxStyle02" changeSearchInfo={changeSearchInfo} searchInfo={searchInfo} searchContent={searchContent} category={currentBoard.cate}/>
                     )}*/}
-                    {currentBoard.board.boardEnName == 'idea' || currentBoard.board.boardEnName == "startup_info" && (
+                    {currentBoard.board.boardEnName == 'idea' || currentBoard.board.boardEnName == "startup_info" || currentBoard.board.boardEnName == 'notice' && (
                         <SearchBoxSelector skinName="SearchBoxStyle01" changeSearchInfo={changeSearchInfo} searchInfo={searchInfo} searchContent={searchContent} category={currentBoard.cate} board={currentBoard.board}/>
                     )}
                     {(currentBoard.board.boardEnName == 'idea' || currentBoard.board.boardEnName == 'ir')  && (
